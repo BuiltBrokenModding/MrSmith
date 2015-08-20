@@ -21,6 +21,10 @@ public class GuiFrame extends JFrame implements ActionListener
     private JComboBox forgeVersionBox;
     private JComboBox smithVersionBox;
 
+    private JButton saveButton;
+    private JButton runButton;
+    private JButton exitButton;
+
     private Smith smith;
 
     public GuiFrame(Smith smith)
@@ -60,12 +64,29 @@ public class GuiFrame extends JFrame implements ActionListener
         JPanel versionPanel = versionPanel(new JPanel(new GridLayout(1, 3)));
         JPanel dirPanel = dirPanel(new JPanel(new GridLayout(3, 1)));
 
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.add(dirPanel, BorderLayout.NORTH);
         contentPanel.add(versionPanel, BorderLayout.SOUTH);
         contentPanel.setBorder(new TitledBorder("Data"));
 
-        setContentPane(contentPanel);
+        JPanel actionPanel = new JPanel(new BorderLayout());
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(this);
+        runButton = new JButton("Run");
+        runButton.addActionListener(this);
+        exitButton = new JButton("Exit");
+        exitButton.addActionListener(this);
+        actionPanel.add(saveButton, BorderLayout.WEST);
+        actionPanel.add(runButton, BorderLayout.CENTER);
+        actionPanel.add(exitButton, BorderLayout.EAST);
+        actionPanel.setBorder(new TitledBorder("Actions"));
+
+        mainPanel.add(contentPanel, BorderLayout.NORTH);
+        mainPanel.add(actionPanel, BorderLayout.SOUTH);
+
+        setContentPane(mainPanel);
 
         addWindowListener(new WindowAdapter()
         {
@@ -147,7 +168,18 @@ public class GuiFrame extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent event)
     {
-
+        if (event.getSource() == runButton)
+        {
+            smith.run(mcVersionBox.getItemAt(mcVersionBox.getSelectedIndex()).toString(), forgeVersionBox.getItemAt(forgeVersionBox.getSelectedIndex()).toString());
+        }
+        else if (event.getSource() == saveButton)
+        {
+            smith.save();
+        }
+        else if (event.getSource() == exitButton)
+        {
+            smith.exit();
+        }
     }
 
     public void centerOnScreen(int width, int height)

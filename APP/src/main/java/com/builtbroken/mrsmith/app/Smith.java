@@ -102,6 +102,92 @@ public class Smith
         //TODO download updated mc and forge version files
     }
 
+    public void save()
+    {
+
+    }
+
+    public void run(String mc_version, String forge_version)
+    {
+        if (this.mc_version.contains(mc_version) && this.forge_versions.containsKey(mc_version))
+        {
+            if (this.forge_versions.get(mc_version) != null && this.forge_versions.get(mc_version).contains(forge_version))
+            {
+                if (!isMCDownloaded(mc_version))
+                {
+                    boolean download = true;
+                    if (!noGui && JOptionPane.showConfirmDialog(null, "MC version " + mc_version + " is not downloaded!\n\nWould you like to download this file?", "Missing File!", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
+                    {
+                        download = false;
+                    }
+
+                    if (download)
+                    {
+                        downloadMC(mc_version);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                if (!isForgeDownloaded(forge_version))
+                {
+                    boolean download = true;
+                    if (!noGui && JOptionPane.showConfirmDialog(null, "Forge version " + forge_version + " is not downloaded!\n\nWould you like to download this file?", "Missing File!", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
+                    {
+                        download = false;
+                    }
+
+                    if (download)
+                    {
+                        downloadForge(mc_version);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (!noGui)
+                    JOptionPane.showMessageDialog(null, "Invalid forge version " + mc_version, "Fatal Exception in Runtime", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Invalid mc version " + mc_version);
+            }
+        }
+        else
+        {
+            if (!noGui)
+                JOptionPane.showMessageDialog(null, "Invalid mc version " + mc_version, "Fatal Exception in Runtime", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Invalid mc version " + mc_version);
+        }
+    }
+
+    public boolean isMCDownloaded(String version)
+    {
+        return false;
+    }
+
+    public boolean isForgeDownloaded(String version)
+    {
+        return false;
+    }
+
+    public void downloadForge(String version)
+    {
+
+    }
+
+    public void downloadMC(String version)
+    {
+
+    }
+
+    public void exit()
+    {
+        System.exit(0);
+    }
+
     private void loadMCVersions()
     {
         System.out.println("Loading mc versions.json");
