@@ -2,6 +2,7 @@ package com.builtbroken.mrsmith.app;
 
 import com.builtbroken.mrsmith.app.gui.GuiFrame;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -59,12 +60,25 @@ public class Main
             }
         }
 
-        if (!noGui)
+        try
         {
-            final GuiFrame f = new GuiFrame(home_folder, mc_bin);
-            f.setVisible(true);
+            Smith smith = new Smith(home_folder, noGui);
+
+            if (!noGui)
+            {
+                final JFrame f = new GuiFrame(smith);
+                f.setVisible(true);
+            }
+        } catch (Exception e)
+        {
+            if (!noGui)
+                JOptionPane.showMessageDialog(null, ("It looks like something went wrong while running Mr Smith. Check the logs\n for the full error report and feel free to report it to the authors of the APP.\n\nError Message: \n    " + e.getClass()).replace("class", "") + (e.getMessage() != null ? ": " + e.getMessage() : ""), "Fatal Exception in Runtime", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        finally
+        {
+            System.out.println("*****************************************************");
         }
 
-        System.out.println("*****************************************************");
     }
 }
